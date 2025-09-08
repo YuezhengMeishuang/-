@@ -1,0 +1,132 @@
+\documentclass[openany]{ctexbook}
+
+\xeCJKsetup{AutoFakeBold=true} % 将pdflatex换成xelatex后，需要手动防止字体报错
+\defaultfontfeatures{AutoFakeBold=2.5}
+\setmainfont{Times New Roman}
+\setmonofont{SimSun} % 设置等宽字体族，使\url可以调用以显示中文
+% \setCJKmonofont{Noto Sans Mono CJK SC}
+% \usepackage{ctex}
+\usepackage{geometry}
+\geometry{a4paper, margin=1in}
+\usepackage{fancyhdr} % 用于自定义页脚
+\usepackage{titlesec} % 用于自定义标题格式
+\usepackage{quotchap} % 用于给章节标题加入引言
+% \usepackage{epigraph} % 用于给子标题加入引言
+% \usepackage{indentfirst} % 使章标题后的首行缩进（好像默认就有，不需要这么做）
+\usepackage{hyperref} % 用于激活网址超链接
+\usepackage{changepage} % 提供 adjustwidth 环境
+% \usepackage{ulem} % 提供 \uline 命令
+\usepackage{xeCJKfntef} % 提供可以给中文换行的下划线，包名是 CJK font effect 的意思
+% \setCJKmainfont[
+%   BoldFont = SimHei, % 或 Source Han Sans SC Bold
+% ]{KaiTi}
+% \setmainfont{Times New Roman}
+
+% \includeonly{intro, chapter00}
+% \includeonly{chapter00}
+% \includeonly{intro, chapter00, chapter01, chapter02}
+% \includeonly{chapter02}
+
+\newcommand{\authorname}{乐正梅霜}
+% \newcommand{\indicate}[1]{\textbf{\underline{#1}}}
+% \newcommand{\indicate}[1]{\textbf{\CJKunderline*{#1}}} % 带*的会把标点跳过去，不带*的在标点下也有下划线
+\newcommand{\indicate}[1]{\textbf{\uline{#1}}} % 好像这两种都行，应该是xeCJKfntef包重写过了，问过kimi后，这是因为xeCJKfntef包加载了\ulem包
+\newcommand{\rigorous}{特别追求严谨性的读者}
+\newcommand{\bilibili}[1]{b站：\url{https://www.bilibili.com/video/#1}}
+\newcommand{\bilibilip}[1]{人声本家：\url{https://www.bilibili.com/video/#1}}
+\newcommand{\bilibiliv}[1]{中v本家：\url{https://www.bilibili.com/video/#1}}
+\newcommand{\bilibilid}[1]{b站（因不可抗力因素换源为纯音乐版本）：\\\indent \qquad \quad \url{https://www.bilibili.com/video/#1}}
+\newcommand{\netease}[1]{网易云：\url{https://music.163.com/\#/song?id=#1}}
+\newcommand{\moegirl}[1]{萌娘百科：\url{https://mzh.moegirl.org.cn/#1}}
+\newcommand{\smalltopic}[1]{\vspace{5pt}\noindent \indicate{#1}\vspace{5pt}}
+\newenvironment{toparent}{\begin{center}\begin{minipage}{0.9\textwidth}\kaishu}{\end{minipage}\end{center}}
+% \newenvironment{examples}{\begin{center}\begin{minipage}{0.9\textwidth}\kaishu}{\end{minipage}\end{center}}
+% \newenvironment{explain}{\begin{center}\begin{minipage}{0.9\textwidth}\kaishu}{\end{minipage}\end{center}}
+\newenvironment{examples}{\begin{adjustwidth}{0.05\linewidth}{0.05\linewidth}\kaishu}
+{\end{adjustwidth}}
+\newenvironment{explain}{\begin{adjustwidth}{0.05\linewidth}{0.05\linewidth}\kaishu}
+{\end{adjustwidth}}
+
+
+\begin{document}
+\begin{sloppypar}
+%kimi输出结果
+%\iffalse
+\begin{titlepage}
+    \centering
+    \vspace*{\fill} % 上半部分
+    {\Huge\bfseries 人间失格自救指南}\par\vspace{2cm}
+    \raggedleft % 作者信息右对齐
+    {\Large \authorname}\par
+    {\small beta1.0 \\ \today \\ (github链接)}
+    
+    \vfill % 用垂直填充分隔上下部分
+    
+    % 下半部分：名言警句
+    \raggedright % 左对齐
+    \begin{quote}
+        美国心理学家斯科特·派克在他的著作《少有人走的路》中写道：“我们不能剥夺另一个人从痛苦中受益的权利。”\\
+        \hfill—— 武志红《愿你拥有被爱照亮的生命》\footnote{我并未在《少有人走的路》中找到这句话的直接出处，但我觉得这句话很有道理，所以把它放到这。}
+        \vspace{1cm} % 两句之间的间距
+        
+        但我们起码得告知另一个人从痛苦中受益的可能性。\\
+        \hfill—— 沃茨基·硕德 \footnote{沃茨基·硕德（Walski Schölder），即“我自己说的”。}
+    \end{quote}
+    
+    \vfill % 将注释推至页面底部
+    
+\end{titlepage}
+
+\makeatletter
+\let\cleardoublepage\clearpage % 将双页清理改为单页
+\makeatother
+
+\frontmatter                      % 书籍前文部分
+
+% 使用\titleformat调整\chapter格式
+\titleformat{\chapter}[display] % shape参数
+{\normalfont\Huge\bfseries\raggedright} % format参数
+{}        % label参数
+{20pt}                                   % sep参数
+{\Huge}                                  % before-code参数
+[] % after-code参数
+\titlespacing{\chapter}{0cm}{1cm}{1cm}
+\large
+\include{intro}
+
+\tableofcontents
+
+\mainmatter
+\setcounter{secnumdepth}{-1} % 在这一段（到secnumdepth计数器重新变回2为止）中chapter、section、subsection不参与计数，目录中不会出现编号，序幕可以保留“序幕”作为前缀 
+% 发现了\addcontentsline命令，但是没搞明白，先搁置
+
+\titlespacing{\chapter}{0cm}{4.5cm}{1.5cm}
+\include{chapter00}
+\setcounter{secnumdepth}{2}
+
+% 使用\titleformat调整\chapter格式
+% 用了ctexbook以后仍然不能删，ctexbook的默认格式中，正文里不带章号
+\titleformat{\chapter}[display] % shape参数
+{\normalfont\Huge\bfseries\raggedright} % format参数
+{第\chinese{chapter}章}        % label参数
+{20pt}                                   % sep参数
+{\Huge}                                  % before-code参数
+[] % after-code参数
+
+\titlespacing{\chapter}{0cm}{3.5cm}{2.5cm}
+\include{chapter01}
+
+\titlespacing{\chapter}{0cm}{4.5cm}{1.5cm}
+\include{chapter02}
+
+\titlespacing{\chapter}{0cm}{5cm}{1cm}
+\include{chapter03}
+
+\setcounter{secnumdepth}{-1}
+\titlespacing{\chapter}{0cm}{3.5cm}{2.5cm}
+\include{midterm}
+\setcounter{secnumdepth}{2}
+
+
+\end{sloppypar}
+\end{document}
