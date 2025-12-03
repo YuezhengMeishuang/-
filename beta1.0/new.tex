@@ -31,12 +31,20 @@
 % \newcommand{\indicate}[1]{\textbf{\underline{#1}}}
 % \newcommand{\indicate}[1]{\textbf{\CJKunderline*{#1}}} % 带*的会把标点跳过去，不带*的在标点下也有下划线
 \newcommand{\indicate}[1]{\textbf{\uline{#1}}} % 好像这两种都行，应该是xeCJKfntef包重写过了，问过kimi后，这是因为xeCJKfntef包加载了\ulem包
+\newcommand{\source}[1]{\indicate{#1}\label{def:#1}}
+\newcommand{\note}[1]{\hyperref[def:#1]{#1}}
+\newcommand{\inote}[1]{\hyperref[def:#1]{\indicate{#1}}}
+\newcommand{\later}[1]{}
+\newcommand{\divider}{\vspace{10pt}\hrule\vspace{10pt}}
+\newcommand{\another}{；\\\indent}
 \newcommand{\rigorous}{特别追求严谨性的读者}
+\newcommand{\trained}{一些熟悉相关领域的读者}
 \newcommand{\bilibili}[1]{b站：\url{https://www.bilibili.com/video/#1}}
 \newcommand{\bilibilip}[1]{人声本家：\url{https://www.bilibili.com/video/#1}}
 \newcommand{\bilibiliv}[1]{中v本家：\url{https://www.bilibili.com/video/#1}}
 \newcommand{\bilibilid}[1]{b站（因不可抗力因素换源为纯音乐版本）：\\\indent \qquad \quad \url{https://www.bilibili.com/video/#1}}
 \newcommand{\netease}[1]{网易云：\url{https://music.163.com/\#/song?id=#1}}
+\newcommand{\sing}[1]{5sing：\url{http://5sing.kugou.com/yc/#1.html}}
 \newcommand{\moegirl}[1]{萌娘百科：\url{https://mzh.moegirl.org.cn/#1}}
 \newcommand{\smalltopic}[1]{\vspace{5pt}\noindent \indicate{#1}\vspace{5pt}}
 \newenvironment{toparent}{\begin{center}\begin{minipage}{0.9\textwidth}\kaishu}{\end{minipage}\end{center}}
@@ -58,7 +66,7 @@
     {\Huge\bfseries 人间失格自救指南}\par\vspace{2cm}
     \raggedleft % 作者信息右对齐
     {\Large \authorname}\par
-    {\small beta1.0 \\ \today \\ (github链接)}
+    {\small beta1.0 \\ \today \\ \url{https://github.com/YuezhengMeishuang/-}}
     
     \vfill % 用垂直填充分隔上下部分
     
@@ -69,7 +77,7 @@
         \hfill—— 武志红《愿你拥有被爱照亮的生命》\footnote{我并未在《少有人走的路》中找到这句话的直接出处，但我觉得这句话很有道理，所以把它放到这。}
         \vspace{1cm} % 两句之间的间距
         
-        但我们起码得告知另一个人从痛苦中受益的可能性。\\
+        但我们起码得告知另一个人从痛苦中受益的可能性与可行性。\\
         \hfill—— 沃茨基·硕德 \footnote{沃茨基·硕德（Walski Schölder），即“我自己说的”。}
     \end{quote}
     
@@ -123,10 +131,18 @@
 \include{chapter03}
 
 \setcounter{secnumdepth}{-1}
-\titlespacing{\chapter}{0cm}{3.5cm}{2.5cm}
+\titlespacing{\chapter}{0cm}{2cm}{2cm}
 \include{midterm}
 \setcounter{secnumdepth}{2}
 
+\titlespacing{\chapter}{0cm}{5cm}{1cm}
+\include{chapter04}
+
+% \titlespacing{\chapter}{0cm}{5cm}{1cm}
+% \include{chapter05}
+
+
+% 结语相关：写作动机、结构缺陷与改正、选歌的用意和推荐的对待态度、关于例子少的说明
 
 \end{sloppypar}
 \end{document}
