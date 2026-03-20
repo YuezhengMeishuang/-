@@ -8,6 +8,7 @@
 % \usepackage{ctex}
 \usepackage{geometry}
 \geometry{a4paper, margin=1in}
+\usepackage{framed} % 用于加框
 \usepackage{fancyhdr} % 用于自定义页脚
 \usepackage{titlesec} % 用于自定义标题格式
 \usepackage{quotchap} % 用于给章节标题加入引言
@@ -32,13 +33,20 @@
 % \newcommand{\indicate}[1]{\textbf{\CJKunderline*{#1}}} % 带*的会把标点跳过去，不带*的在标点下也有下划线
 \newcommand{\indicate}[1]{\textbf{\uline{#1}}} % 好像这两种都行，应该是xeCJKfntef包重写过了，问过kimi后，这是因为xeCJKfntef包加载了\ulem包
 \newcommand{\source}[1]{\indicate{#1}\label{def:#1}}
+\newcommand{\presource}[1]{\indicate{#1}\label{predef:#1}}
 \newcommand{\note}[1]{\hyperref[def:#1]{#1}}
 \newcommand{\inote}[1]{\hyperref[def:#1]{\indicate{#1}}}
+\newcommand{\labelsection}[1]{\section{#1\label{sec:#1}}}
+\newcommand{\labelsubsection}[1]{\subsection{#1\label{sec:#1}}}
 \newcommand{\later}[1]{}
+
 \newcommand{\divider}{\vspace{10pt}\hrule\vspace{10pt}}
+\newcommand{\smalltopic}[1]{\vspace{5pt}\noindent \indicate{#1}\vspace{5pt}}
 \newcommand{\another}{；\\\indent}
+
 \newcommand{\rigorous}{特别追求严谨性的读者}
 \newcommand{\trained}{一些熟悉相关领域的读者}
+
 \newcommand{\bilibili}[1]{b站：\url{https://www.bilibili.com/video/#1}}
 \newcommand{\bilibilip}[1]{人声本家：\url{https://www.bilibili.com/video/#1}}
 \newcommand{\bilibiliv}[1]{中v本家：\url{https://www.bilibili.com/video/#1}}
@@ -46,15 +54,63 @@
 \newcommand{\netease}[1]{网易云：\url{https://music.163.com/\#/song?id=#1}}
 \newcommand{\sing}[1]{5sing：\url{http://5sing.kugou.com/yc/#1.html}}
 \newcommand{\moegirl}[1]{萌娘百科：\url{https://mzh.moegirl.org.cn/#1}}
-\newcommand{\smalltopic}[1]{\vspace{5pt}\noindent \indicate{#1}\vspace{5pt}}
-\newenvironment{toparent}{\begin{center}\begin{minipage}{0.9\textwidth}\kaishu}{\end{minipage}\end{center}}
+% \newenvironment{toparent}{\begin{center}\begin{minipage}{0.9\textwidth}\kaishu}{\end{minipage}\end{center}}
 % \newenvironment{examples}{\begin{center}\begin{minipage}{0.9\textwidth}\kaishu}{\end{minipage}\end{center}}
 % \newenvironment{explain}{\begin{center}\begin{minipage}{0.9\textwidth}\kaishu}{\end{minipage}\end{center}}
+\newenvironment{toparent}{\begin{adjustwidth}{0.05\linewidth}{0.05\linewidth}\kaishu}
+{\end{adjustwidth}}
 \newenvironment{examples}{\begin{adjustwidth}{0.05\linewidth}{0.05\linewidth}\kaishu}
 {\end{adjustwidth}}
 \newenvironment{explain}{\begin{adjustwidth}{0.05\linewidth}{0.05\linewidth}\kaishu}
 {\end{adjustwidth}}
 
+% 段落脚注命令，调试见test_9
+% ======================================================================
+\makeatletter
+\newcounter{parfnote}
+\renewcommand{\theparfnote}{\arabic{parfnote}}
+\def\parfnotestore{}
+
+% \newcommand{\@addparanote}[2]{\g@addto@macro\parfnotestore{\item[#1] #2}}
+
+% \newcommand{\paranote}[1]{%
+%     \stepcounter{parfnote}%
+%     % 关键：先用 \edef 将 \theparfnote 展开为固定数字，存储在临时宏中
+%     % 完全没用，原因不明
+%     % 也不是完全没用，拿\number\value{parfnote}替换，空格会变大
+%     \edef\@currentnum{\arabic{parfnote}}%
+%     % 显示正文上标（使用同样的 \@currentnum）
+%     \hbox{\@textsuperscript{\normalfont\theparfnote}}%
+%     % 现在直接调用，不需要 \expandafter，因为 \@currentnum 已经是纯数字
+%     % 还是需要的，不过因为不明原因，空格缩小了
+%     % 最后发现，空格是因为 \@addparanote 命令换了行，把换行删掉就没有了
+%     \expandafter\@addparanote\expandafter{\@currentnum}{#1}
+% }
+
+% 最后的解决方法是删掉所有换行。采用的代码是test_9/test_2里面的第一段代码。
+\newcommand{\paranote}[1]{\stepcounter{parfnote}\textsuperscript{\theparfnote}\protected@edef\@tempa{\noexpand\g@addto@macro\noexpand\parfnotestore{\noexpand\item[\theparfnote] #1}}\@tempa}
+
+\newcommand{\insertparanotes}{
+    \ifx\parfnotestore\@empty\else
+        \begin{center}\begin{minipage}{0.8\textwidth}
+        \footnotesize\heiti%\songti
+        \vspace{0.1em}\hrule\vspace{0.4em}
+        \begin{list}{}{
+            \setlength{\leftmargin}{1.5em}
+            \setlength{\itemsep}{0.3em}
+            \setlength{\parsep}{0pt}
+        }
+        \parfnotestore
+        \end{list}
+        % \vspace{0.1em}
+        \hrule\vspace{0.3em}
+        \end{minipage}\end{center}
+        \gdef\parfnotestore{}
+        \setcounter{parfnote}{0}
+    \fi
+}
+\makeatother
+% ======================================================================
 
 \begin{document}
 \begin{sloppypar}
@@ -138,8 +194,12 @@
 \titlespacing{\chapter}{0cm}{5cm}{1cm}
 \include{chapter04}
 
-% \titlespacing{\chapter}{0cm}{5cm}{1cm}
-% \include{chapter05}
+\titlespacing{\chapter}{0cm}{5cm}{1cm}
+\include{chapter05}
+
+% \backmatter
+% \titlespacing{\chapter}{0cm}{11cm}{1cm}
+% \include{summary}
 
 
 % 结语相关：写作动机、结构缺陷与改正、选歌的用意和推荐的对待态度、关于例子少的说明
